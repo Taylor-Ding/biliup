@@ -30,15 +30,23 @@ def run_migrations_offline() -> None:
 
     """
     from biliup.database.models import DB_URL
+    # 配置上下文
     context.configure(
+        # 数据库连接URL
         url=DB_URL,
+        # 目标元数据
         target_metadata=target_metadata,
+        # 使用字面绑定
         literal_binds=True,
+        # 方言选项，使用命名参数风格
         dialect_opts={"paramstyle": "named"},
+        # 以批处理模式渲染，处理 sqlite 约束变化
         render_as_batch=True,  # 使用批处理模式，以处理 sqlite 约束变化
     )
 
+    # 开始事务
     with context.begin_transaction():
+        # 运行迁移
         context.run_migrations()
 
 
@@ -50,22 +58,33 @@ def run_migrations_online() -> None:
 
     """
     from biliup.database.models import DB_URL
+    # 创建数据库引擎，使用 NullPool 作为连接池
     connectable = create_engine(
         DB_URL, poolclass=pool.NullPool,
     )
 
+    # 使用数据库引擎建立连接
     with connectable.connect() as connection:
+        # 配置迁移上下文
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
             render_as_batch=True,  # 使用批处理模式，以处理 sqlite 约束变化
         )
 
+        # 开启事务
         with context.begin_transaction():
+            # 运行迁移
             context.run_migrations()
 
 
+
 if context.is_offline_mode():
+    # 如果处于离线模式
     run_migrations_offline()
+    # 执行离线迁移
 else:
+    # 否则
     run_migrations_online()
+    # 执行在线迁移
+
