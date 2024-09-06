@@ -2,9 +2,16 @@ import json
 import os
 import random
 import time
+from telnetlib import EC
 
+import selenium
 from PIL import Image
 from typing import List
+
+from selenium.webdriver import Keys, ActionChains
+from selenium.webdriver.chromium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 from biliup.config import config
 from ..engine import Plugin
