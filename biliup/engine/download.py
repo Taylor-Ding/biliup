@@ -99,7 +99,6 @@ class DownloadBase(ABC):
             # 检查是否安装了FFMpeg
             if shutil.which("ffmpeg"):
                 # streamlink无法处理flv,所以回退到ffmpeg
-                # streamlink无法处理flv，所以回退到ffmpeg
                 if self.downloader == 'streamlink' and '.flv' not in parsed_url_path:
                     return self.ffmpeg_download(use_streamlink=True)
                 else:
@@ -112,11 +111,9 @@ class DownloadBase(ABC):
         # 根据URL路径判断流的类型
         if '.flv' in parsed_url_path:
             # 假定是flv流
-            # 假定flv流
             self.suffix = 'flv'
         else:
             # 其他流使用stream-gears按hls保存为ts
-            # 其他流stream_gears会按hls保存为ts
             self.suffix = 'ts'
 
         # 调用stream-gears进行下载
