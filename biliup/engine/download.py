@@ -28,21 +28,33 @@ logger = logging.getLogger('biliup')
 
 class DownloadBase(ABC):
     def __init__(self, fname, url, suffix=None, opt_args=None):
+        # 初始化房间标题为None
         self.room_title = None
+
+        # 如果opt_args为None，则初始化为空列表
         if opt_args is None:
             opt_args = []
+
+        # 初始化文件名和URL
         self.fname = fname
         self.url = url
-        # 录制后保存文件格式而非源流格式 对应原配置文件format 仅ffmpeg及streamlink生效
+
+        # 检查并设置文件后缀，如果后缀不存在则记录错误日志
         if not suffix:
             logger.error(f'检测到suffix不存在，请补充后缀')
         else:
             self.suffix = suffix.lower()
+
+        # 初始化封面路径为None
         self.live_cover_path = None
+
+        # 初始化数据库行ID为0
         self.database_row_id = 0
+
+        # 从配置中获取下载器类型，默认为'stream-gears'
         self.downloader = config.get('downloader', 'stream-gears')
-        # ffmpeg.exe -i  http://vfile1.grtn.cn/2018/1542/0254/3368/154202543368.ssm/154202543368.m3u8
-        # -c copy -bsf:a aac_adtstoasc -movflags +faststart output.mp4
+
+        # 初始化原始流URL为None
         self.raw_stream_url = None
 
         # 主播单独传参会覆盖全局设置。例如新增了一个全局的filename_prefix参数，在下面添加self.filename_prefix = config.get('filename_prefix'),
